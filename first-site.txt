@@ -1,0 +1,3 @@
+This is the first-site from the ecommerce book. 
+
+Commit test 1

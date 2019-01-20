@@ -1,0 +1,11 @@
+﻿git config --global user.name "RedfordRobert68"
+
+git config --global user.email redfordrobert68@gmail.com
+
+git clone https://github.com/RedfordRobert68/First-Site.git
+
+//List
+ls
+
+//Initiate Master
+cd First-Site/
