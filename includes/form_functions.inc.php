@@ -19,9 +19,12 @@
         echo '<div class="form-group';
         
         // Add a class if an error exists:
-        if(array_key_exists($name, $errors)) echo 'has-error';{
-            echo '">';
+        if(array_key_exists($name, $errors)){ 
+            echo 'has-error';
         }
+
+        //Complete the div
+        echo '">';
         
         //Create label if one is provided:
         if(!empty($label)) {
@@ -30,10 +33,12 @@
 
         //Create a conditional that checks the input type
         if (($type === 'text') || ($type === 'password') || ($type === 'email')){
+            
+            //Start creating the input
             echo '<input type="' . $type . '" name="' . $name . '" id="' . $name . '" class="form-control';
 
             //Add the input's value, if applicable
-            if($value) echo ' value="' . htmlspecialchars($value) , '"';
+            if($value) echo ' value="' . htmlspecialchars($value) . '"';
 
             //Check for additional options
             if(!empty($options) && is_array($options)){
@@ -42,7 +47,7 @@
                 }
             }
             
-            '>';//Close opening input tag
+            echo '>';//Close opening input tag
             
             //Show the error message if one exists
             if(array_key_exists($name, $errors)){
@@ -61,9 +66,9 @@
             echo '<textarea name="' . $name . '" id="' . $name . '" class="form-control"';
 
             //Check for any additional options
-            if(!empty($options) && is_array($options){
+            if(!empty($options) && is_array($options)){
                 foreach($options as $k => $v){
-                    echo "$k=\"$v\"";
+                    echo " $k=\"$v\"";
                 }
             }
             echo'>';//Complete opening tag
