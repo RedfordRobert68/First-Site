@@ -20,7 +20,7 @@
         
         // Add a class if an error exists:
         if(array_key_exists($name, $errors)){ 
-            echo 'has-error';
+            echo ' has-error';
         }
 
         //Complete the div
@@ -35,7 +35,7 @@
         if (($type === 'text') || ($type === 'password') || ($type === 'email')){
             
             //Start creating the input
-            echo '<input type="' . $type . '" name="' . $name . '" id="' . $name . '" class="form-control';
+            echo '<input type="' . $type . '" name="' . $name . '" id="' . $name . '" class="form-control"';
 
             //Add the input's value, if applicable
             if($value) echo ' value="' . htmlspecialchars($value) . '"';
@@ -47,7 +47,7 @@
                 }
             }
             
-            echo '>';//Close opening input tag
+            echo '></input>';//Close opening input tag
             
             //Show the error message if one exists
             if(array_key_exists($name, $errors)){
