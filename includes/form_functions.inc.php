@@ -47,7 +47,8 @@
                 }
             }
             
-            echo '></input>';//Close opening input tag
+            //Complete the element
+            echo '>';
             
             //Show the error message if one exists
             if(array_key_exists($name, $errors)){
