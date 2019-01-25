@@ -92,8 +92,8 @@
 					</div>';
 
 					// Send a separate email?
-					$body = "Thank you for registering at boogalooga.com. Blah Blah Blah. \n\n";
-					mail($_POST['email'], 'Registration Confirmation', $body, 'From: admin@boogalooga.com');
+					$body = "Thank you for registering at metrographicsanddesign.com. Blah Blah Blah. \n\n";
+					mail($_POST['email'], 'Registration Confirmation', $body, 'From: robert_vincent@metrographicsanddesign.com');
 
 					//Finish the page
 					include('./includes/footer.html');
