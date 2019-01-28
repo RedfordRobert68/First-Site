@@ -1,6 +1,6 @@
 <?php
 	require('./includes/config.inc.php');
-	$_SESSION['user_id'] = 1;
+	//$_SESSION['user_id'] = 1;
 
 	require(MYSQL);
 
