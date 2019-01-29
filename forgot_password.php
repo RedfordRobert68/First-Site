@@ -35,7 +35,11 @@
         //Generate a new password
         if(empty($pass_errors)){
             $p = substr(md5(uniqid(rand(), true)), 10, 15);
+
+            //Update the database
             $q = "UPDATE users SET pass='" . password_hash($p, PASSWORD_BCRYPT) . "' WHERE id=$uid LIMIT 1";
+            $r = mysqli_query($dbc, $q);
+            
             if(mysqli_affected_rows($dbc) === 1){
 
                 //Send the new password to the user
