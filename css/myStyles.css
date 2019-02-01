@@ -1,0 +1,3 @@
+div.tox-notification, div.tox-notification--in, div.tox-notification--warning{
+    display: none !important;
+}

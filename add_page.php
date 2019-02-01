@@ -25,7 +25,7 @@
         if(!empty($_POST['title'])){
             $t = escape_data(strip_tags($_POST['title']), $dbc);
         }else{
-            $add_page_errors['title'] = 'Please ebter the title!';
+            $add_page_errors['title'] = 'Please enter the title!';
         }
 
         //Validate the category
@@ -45,7 +45,7 @@
         //Validate the content
         if(!empty($_POST['content'])){
             $allowed = '<div><p><span><br><a><img><h1><h2><h3><h4><ul><ol><li><blockquote>';
-            $c = escape_data(strip_tags($_POST['content']), $allowed, $dbc);
+            $c = escape_data(strip_tags($_POST['content'], $allowed), $dbc);
         }else{
             $add_page_errors['content'] = 'Please enter the content!';
         }
@@ -54,6 +54,7 @@
         if(empty($add_page_errors)){
             $q = "INSERT INTO pages (categories_id, title, description, content) VALUES($cat, '$t', '$d', '$c')";
             $r = mysqli_query($dbc, $q);
+
             if(mysqli_affected_rows($dbc) === 1){
                 echo
                     '<div class="alert alert-success">
@@ -99,8 +100,8 @@
                 echo "<option value=\"$row[0]\"";
                 if(isset($_POST['category']) && ($_POST['category'] == $row[0])){
                     echo 'selected="selected"';
-                    echo ">$row[1]</option>\n";
                 }
+                echo ">$row[1]</option>\n";
             }
               
             echo '</select>';
@@ -117,7 +118,22 @@
         <input type="submit" name="submit_button" value="Add This Page" id="submit_button" class="btn btn-default" />
     </fieldset>
 </form>
+<script src='https://cloud.tinymce.com/5-testing/tinymce.min.js'></script>
+<script>tinymce.init({ 
+    selector: "#content", 
+    width: "800",
+    height: "400",
+    browser_spellcheck: true,
 
+    plugins: "paste searchreplace fullscreen hr link anchor image charmap media autoresize autosave contextmenu wordcount lists advlist", 
+    
+    toolbar1: "cut copy paste|undo redo removeformat|hr link unlink anchor image|charmap media|search replace|fullscreen", 
+
+    toolbar2: "bold italic underline strikethrough|alignleft aligncenter alignright alignjustify|formatselect|numlist bullist|outdent indent blockquote",
+    
+    content_css : "css/bootstrap.min.css",
+    });
+</script>
 <?php
     include('./includes/footer.html');
 ?>
