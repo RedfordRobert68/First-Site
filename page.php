@@ -71,3 +71,4 @@
     } //End of primary IF. If no integer ID greater than or equal to 1 was received by this page, the user will see this error message.
 
     include('./includes/footer.html');
+?>
