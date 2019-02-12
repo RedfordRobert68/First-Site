@@ -46,16 +46,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if(finfo_file($fileinfo, $file['tmp_name']) !== 'application/pdf'){
             $add_pdf_errors['pdf'] = 'The uploaded file was not a PDF.';
         }
+
+        //Close the resource:
         finfo_close($fileinfo);
 
         //If there were no errors, create the file's new name and destination:
         if(!array_key_exists('pdf', $add_pdf_errors)){
             
             //Create a temporary name for the file
-            $tmp_name = sha1($file['name']) . uniqid('', true);
+            $tmp_name = sha1($file['name']) . uniqid('',true);
 
             //Move the file to its proper folder but add _tmp, just in case
-            $dest = PDFS_DIR . $tmp_name . '_tmp';
+            $dest = 'PDFS_DIR' . $tmp_name . '_tmp';
 
             if(move_uploaded_file($file['tmp_name'], $dest)){
 
@@ -98,18 +100,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         } // End of switch
     } // End of $_FILES IF-ELSEIF-ELSE
 
-    //Add the PDF to the database:
     if(empty($add_pdf_errors)){
+
+        //Add the PDF to the database
         $fn = escape_data($_SESSION['pdf']['file_name'], $dbc);
-        $tmp_name = escape_data($_SESSION['pdf']['file_name'], $dbc);
+        $tmp_name = escape_data($_SESSION['pdf']['tmp_name'], $dbc);
         $size = (int) $_SESSION['pdf']['size'];
         $q = "INSERT INTO pdfs(title, description, tmp_name, file_name, size) VALUES('$t', '$d', '$tmp_name', '$fn', $size)";
         $r = mysqli_query($dbc, $q);
 
         //If the query worked, rename the temporary file:
-        if(mysqli_affected_rows($dbc) === 1){
-            $original = PDFS_DIR . $tmp_name . '_tmp';
-            $dest = PDFS_DIR . $tmp_name;
+        if(mysqli_affected_rows($dbc) === 1){ //If it ran OK
+            $original = 'PDFS_DIR' . $tmp_name . '_tmp';
+            $dest = 'PDFS_DIR' . $tmp_name;
             rename($original, $dest);
 
             //Indicate the success to the user and clear the values:
@@ -142,6 +145,66 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 //Begin the form:
 // Need the form functions script, which defines create_form_input():
-   
+require('includes/form_functions.inc.php');  
+?>
+<h1>
+    Add a PDF
+</h1>
+<form enctype="multipart/form-data" action="add_pdf.php" method="post" accept-charset="utf-8">
+    <input type="hidden" name="MAX_FILE_SIZE" value="5242880"><!--MAX_FILE_SIZE is a suggestion to the browser that may or may not be ignored-->
+    <fieldset>
+        <legend>
+            Fill out the form to add a PDF to the site:
+        </legend>
+        <?php
+            //Create the first two elements
+            create_form_input('title', 'text', 'Title', $add_pdf_errors);
+            create_form_input('description', 'textarea', 'Description', $add_pdf_errors);
 
+            //Start creating the file input
+            echo '<div class="form-group';
+
+            //Check for an error or successful upload
+            if(array_key_exists('pdf', $add_pdf_errors)){
+                echo ' has-error';
+            }else if(isset($_SESSION['pdf'])){
+                echo ' has-success';
+            }
+
+            //Add the file input
+            echo '">
+                    <label for="pdf" class="control-label">
+                        PDF
+                    </label>
+                    <input type="file" name="pdf" id="pdf">';
+
+            //Check for an error to be displayed
+            if(array_key_exists('pdf', $add_pdf_errors)){
+                echo '<span class="help-block">' . $add_pdf_errors['pdf'] . '</span>';//This code adds the error message after the file input.
+
+            //If the file already exists, indicate that to the user
+            }else{ //No error.
+                if(isset($_SESSION['pdf'])){
+                    echo '
+                        <p class="lead">
+                            Currently: "' . $_SESSION['pdf']['file_name'] . '"
+                        </p>';
+                }
+            } //End of errors IF-ELSE
+
+            //Complete the file input DIV:
+            echo '
+                    <span class="help-block">
+                        PDF only, 5 MB Limit
+                    </span>
+                </div>';
+        ?>
+
+        <!--Complete the form and the page-->
+        <input type="submit" name="submit_button" value="Add This PDF" id="submit_button" class="btn btn-default" />
+    </fieldset>
+</form>
+
+<?php 
+    include('./includes/footer.html');
 ?>
