@@ -6,7 +6,7 @@ DEFINE('CONTACT_EMAIL', 'robert_vincent@metrographicsanddesign.com');
 define('BASE_URI', 'C:/xampp/htdocs/first-site/First-Site/');
 define('BASE_URL', 'localhost:82/first-site/First-Site/');
 define('MYSQL', BASE_URI . 'includes/mysql.inc.php');
-define('MYSQL', BASE_URI . 'pdfs/');
+define('PDFS_DIR', BASE_URI . 'pdfs/');
 
 session_start();
 
